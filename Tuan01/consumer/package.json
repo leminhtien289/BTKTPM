@@ -1,10 +1,10 @@
 {
   "name": "consumer",
   "version": "1.0.0",
-  "main": "consumer_dlq.js",
+  "main": "consumer.js",
   "scripts": {
-    "start": "node consumer_dlq.js",
-    "dev": "node --watch --watch-path=. consumer_dlq.js"
+    "start": "node consumer.js",
+    "dev": "node --watch --watch-path=. consumer.js"
   },
   "dependencies": {
     "amqplib": "^0.10.9"
