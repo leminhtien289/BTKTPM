@@ -1,0 +1,346 @@
+:root {
+  --primary: #ff5722;
+  --secondary: #2196f3;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #333333;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.card {
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* Fix login title overlap */
+.card h1 {
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+button {
+  padding: 12px 20px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+}
+
+.btn-logout {
+  background-color: #dc3545;
+}
+
+.btn-banking {
+  background-color: var(--secondary);
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+.buttons button {
+  flex: 1;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  background: white;
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Fix ADMIN badge alignment — keep badge inline with h1 text */
+header h1 {
+  font-size: 1.4rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.nav-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.nav-actions button.active {
+  background-color: var(--primary);
+  color: white;
+}
+.nav-actions button:not(.active):not(.btn-logout) {
+  background-color: #e9ecef;
+  color: #333;
+}
+
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.food-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 260px;
+}
+
+/* Push button to bottom so all cards align evenly */
+.food-card button {
+  margin-top: auto;
+}
+
+/* Fixed food description height to prevent card size variance */
+.food-card p {
+  flex: 1;
+  color: #666;
+  font-size: 14px;
+  margin: 6px 0;
+}
+
+.food-image {
+  font-size: 64px;
+  margin-bottom: 10px;
+}
+
+.price {
+  font-weight: bold;
+  color: var(--primary);
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.cart-view {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 18px;
+}
+
+.cart-total {
+  text-align: right;
+  font-size: 24px;
+  margin: 20px 0;
+  color: var(--primary);
+}
+
+.btn-checkout {
+  width: 100%;
+  font-size: 18px;
+  padding: 15px;
+}
+
+.checkout-view {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.payment-result {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 8px;
+}
+.payment-result.success { background: #e8f5e9; color: #2e7d32; }
+.payment-result.failed { background: #ffebee; color: #c62828; }
+
+/* ── Hint & badges ── */
+.hint { color: #888; font-size: 13px; margin: 4px 0 0; }
+.hint code { background: #f0f0f0; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+
+.admin-badge {
+  background: #ff5722;
+  color: white;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  vertical-align: middle;
+  margin-left: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.admin-tab { background-color: #7c3aed !important; color: white !important; }
+.admin-tab.active { background-color: #5b21b6 !important; }
+
+/* ── Admin panel ── */
+.admin-panel { max-width: 900px; margin: 0 auto; }
+.admin-panel h2 { margin-bottom: 20px; }
+
+.role-tag {
+  background: #fde68a;
+  color: #92400e;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+  vertical-align: middle;
+  margin-left: 8px;
+}
+
+.admin-form {
+  max-width: 100%;
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.admin-form h3 { margin: 0 0 16px; }
+
+.form-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.form-row input { flex: 1; }
+
+/* Labeled form fields for Admin Panel */
+.admin-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 14px;
+}
+.admin-field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+}
+.admin-field-row {
+  display: flex;
+  gap: 16px;
+}
+.admin-field-row .admin-field { flex: 1; }
+
+
+.admin-msg {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.admin-food-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-food-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: white;
+  padding: 14px 20px;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.admin-food-icon { font-size: 36px; }
+
+.admin-food-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.admin-food-info strong { font-size: 16px; }
+.admin-food-info span { font-size: 13px; color: #666; }
+
+.admin-food-actions { display: flex; gap: 8px; }
+
+.btn-edit {
+  background-color: #f59e0b;
+  color: white;
+  padding: 8px 14px;
+  font-size: 13px;
+}
+.btn-delete {
+  background-color: #ef4444;
+  color: white;
+  padding: 8px 14px;
+  font-size: 13px;
+}

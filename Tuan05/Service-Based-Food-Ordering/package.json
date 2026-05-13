@@ -1,0 +1,15 @@
+{
+  "name": "lab-b5-service-based",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "concurrently \"npm run start-user\" \"npm run start-food\" \"npm run start-order\" \"npm run start-payment\" \"npm run start-frontend\"",
+    "start-user": "cd user-service && node index.js",
+    "start-food": "cd food-service && node index.js",
+    "start-order": "cd order-service && node index.js",
+    "start-payment": "cd payment-service && node index.js",
+    "start-frontend": "cd frontend && npm run dev"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

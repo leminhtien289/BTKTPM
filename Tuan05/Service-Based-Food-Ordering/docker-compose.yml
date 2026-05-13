@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  user-service:
+    build: 
+      context: ./user-service
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    networks:
+      - food_network
+
+  food-service:
+    build: 
+      context: ./food-service
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    networks:
+      - food_network
+
+  order-service:
+    build: 
+      context: ./order-service
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    environment:
+      - USER_SERVICE_URL=http://user-service:8081
+      - FOOD_SERVICE_URL=http://food-service:8082
+    networks:
+      - food_network
+
+  payment-service:
+    build: 
+      context: ./payment-service
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8084"
+    environment:
+      - ORDER_SERVICE_URL=http://order-service:8083
+    networks:
+      - food_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    networks:
+      - food_network
+
+networks:
+  food_network:
+    driver: bridge
