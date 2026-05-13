@@ -1,0 +1,9 @@
+{
+  "name": "message-broker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "aedes": "^0.51.0",
+    "net": "^1.0.2"
+  }
+}

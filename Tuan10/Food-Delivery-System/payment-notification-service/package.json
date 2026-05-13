@@ -1,0 +1,8 @@
+{
+  "name": "payment-notification-service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "mqtt": "^5.3.5"
+  }
+}
