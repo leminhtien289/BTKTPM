@@ -1,0 +1,9 @@
+{
+  "name": "flash-sale-space-based",
+  "version": "1.0.0",
+  "scripts": {
+    "setup": "node -e \"const {execSync}=require('child_process');['seed','pu1-product','pu2-cart','pu3-order','pu4-inventory','frontend'].forEach(d=>{console.log('Installing',d);execSync('npm install',{cwd:d,stdio:'inherit'})})\"",
+    "seed": "node -e \"process.chdir('seed')\" && node seed/seed.js",
+    "start": "node start.js"
+  }
+}

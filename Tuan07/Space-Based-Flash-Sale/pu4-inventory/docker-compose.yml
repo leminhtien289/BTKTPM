@@ -1,0 +1,13 @@
+version: '3.8'
+
+# Người 5 chạy file này
+# Tạo file .env rồi điền IP máy chạy Redis vào REDIS_HOST
+
+services:
+  pu4-inventory:
+    build: .
+    ports:
+      - "8084:8084"
+    environment:
+      - REDIS_HOST=${REDIS_HOST:-localhost}
+    restart: unless-stopped

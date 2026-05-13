@@ -1,0 +1,19 @@
+version: '3.8'
+
+# Người 1 (Frontend) chạy file này
+# 1. Sao chép .env.example thành .env
+# 2. Điền IP các máy của từng người vào .env
+# 3. docker-compose up --build
+
+services:
+  frontend:
+    build:
+      context: .
+      args:
+        VITE_PU1_URL: ${PU1_URL:-http://localhost:8081}
+        VITE_PU2_URL: ${PU2_URL:-http://localhost:8082}
+        VITE_PU3_URL: ${PU3_URL:-http://localhost:8083}
+        VITE_PU4_URL: ${PU4_URL:-http://localhost:8084}
+    ports:
+      - "3000:80"
+    restart: unless-stopped

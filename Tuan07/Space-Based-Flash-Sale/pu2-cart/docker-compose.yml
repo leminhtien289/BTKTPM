@@ -1,0 +1,13 @@
+version: '3.8'
+
+# Người 3 chạy file này
+# Tạo file .env rồi điền IP máy chạy Redis vào REDIS_HOST
+
+services:
+  pu2-cart:
+    build: .
+    ports:
+      - "8082:8082"
+    environment:
+      - REDIS_HOST=${REDIS_HOST:-localhost}
+    restart: unless-stopped

@@ -1,0 +1,30 @@
+version: '3.8'
+
+# Người 1 chạy file này — cung cấp Redis Data Grid cho toàn LAN
+# Sau khi up, thông báo IP máy mình cho các người còn lại
+
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"             # mở ra LAN
+    volumes:
+      - redis_data:/data
+    command: redis-server --save 60 1 --protected-mode no
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  seed:
+    build: .
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      - REDIS_HOST=redis
+    restart: "no"
+
+volumes:
+  redis_data:
