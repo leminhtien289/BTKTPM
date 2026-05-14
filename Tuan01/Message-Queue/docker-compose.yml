@@ -8,7 +8,12 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
- 
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   producer:
     build: ./producer
     container_name: producer
@@ -26,7 +31,8 @@ services:
             - node_modules/
     command: npm run dev
     depends_on:
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
 
   consumer:
     build: ./consumer
@@ -43,4 +49,5 @@ services:
             - node_modules/
     command: npm run dev
     depends_on:
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
