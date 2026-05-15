@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+
+    <!-- ===== SINGLETON: Library ===== -->
+    <mxCell id="2" value="Library" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="20" y="20" width="300" height="216" as="geometry" />
+    </mxCell>
+    <mxCell id="2a" value="- instance: Library {static}" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="2">
+      <mxGeometry y="26" width="300" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="2b" value="- books: List&lt;Book&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="2">
+      <mxGeometry y="52" width="300" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="2c" value="- observers: List&lt;LibraryObserver&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="2">
+      <mxGeometry y="78" width="300" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="2s" value="" style="line;strokeWidth=1;fillColor=none;strokeColor=inherit;" vertex="1" parent="2">
+      <mxGeometry y="104" width="300" height="8" as="geometry" />
+    </mxCell>
+    <mxCell id="2d" value="+ getInstance(): Library {static}" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="2">
+      <mxGeometry y="112" width="300" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="2e" value="+ subscribe(observer): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="2">
+      <mxGeometry y="138" width="300" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="2f" value="+ addBook(book: Book): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="2">
+      <mxGeometry y="164" width="300" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="2g" value="+ search(strategy, query): List&lt;Book&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="2">
+      <mxGeometry y="190" width="300" height="26" as="geometry" />
+    </mxCell>
+
+    <!-- ===== ABSTRACT: Book (Factory Product) ===== -->
+    <mxCell id="10" value="&lt;i&gt;Book&lt;/i&gt;" style="swimlane;fontStyle=3;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="400" y="20" width="240" height="164" as="geometry" />
+    </mxCell>
+    <mxCell id="10a" value="# title: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="10">
+      <mxGeometry y="26" width="240" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="10b" value="# author: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="10">
+      <mxGeometry y="52" width="240" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="10c" value="# genre: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="10">
+      <mxGeometry y="78" width="240" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="10d" value="# available: boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="10">
+      <mxGeometry y="104" width="240" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="10s" value="" style="line;strokeWidth=1;fillColor=none;strokeColor=inherit;" vertex="1" parent="10">
+      <mxGeometry y="130" width="240" height="8" as="geometry" />
+    </mxCell>
+    <mxCell id="10e" value="+ getType(): String   + getTitle(): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="10">
+      <mxGeometry y="138" width="240" height="26" as="geometry" />
+    </mxCell>
+
+    <!-- ===== Concrete Books ===== -->
+    <mxCell id="11" value="PhysicalBook" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="290" y="290" width="150" height="52" as="geometry" />
+    </mxCell>
+    <mxCell id="11m" value="+ getType(): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="11">
+      <mxGeometry y="26" width="150" height="26" as="geometry" />
+    </mxCell>
+
+    <mxCell id="12" value="EBook" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="460" y="290" width="140" height="52" as="geometry" />
+    </mxCell>
+    <mxCell id="12m" value="+ getType(): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="12">
+      <mxGeometry y="26" width="140" height="26" as="geometry" />
+    </mxCell>
+
+    <mxCell id="13" value="AudioBook" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="620" y="290" width="150" height="52" as="geometry" />
+    </mxCell>
+    <mxCell id="13m" value="+ getType(): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="13">
+      <mxGeometry y="26" width="150" height="26" as="geometry" />
+    </mxCell>
+
+    <!-- ===== ABSTRACT: BookCreator (Factory Creator) ===== -->
+    <mxCell id="15" value="&lt;i&gt;BookCreator&lt;/i&gt;" style="swimlane;fontStyle=3;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="400" y="430" width="270" height="86" as="geometry" />
+    </mxCell>
+    <mxCell id="15s" value="" style="line;strokeWidth=1;fillColor=none;strokeColor=inherit;" vertex="1" parent="15">
+      <mxGeometry y="26" width="270" height="8" as="geometry" />
+    </mxCell>
+    <mxCell id="15a" value="+ createBook(title, author, genre): Book" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="15">
+      <mxGeometry y="34" width="270" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="15b" value="+ newBook(title, author, genre): Book" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="15">
+      <mxGeometry y="60" width="270" height="26" as="geometry" />
+    </mxCell>
+
+    <!-- ===== Concrete Creators ===== -->
+    <mxCell id="16" value="PhysicalBookCreator" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="280" y="610" width="190" height="52" as="geometry" />
+    </mxCell>
+    <mxCell id="16m" value="+ createBook(): Book" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="16">
+      <mxGeometry y="26" width="190" height="26" as="geometry" />
+    </mxCell>
+
+    <mxCell id="17" value="EBookCreator" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="490" y="610" width="160" height="52" as="geometry" />
+    </mxCell>
+    <mxCell id="17m" value="+ createBook(): Book" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="17">
+      <mxGeometry y="26" width="160" height="26" as="geometry" />
+    </mxCell>
+
+    <mxCell id="18" value="AudioBookCreator" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="670" y="610" width="190" height="52" as="geometry" />
+    </mxCell>
+    <mxCell id="18m" value="+ createBook(): Book" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="18">
+      <mxGeometry y="26" width="190" height="26" as="geometry" />
+    </mxCell>
+
+    <!-- ===== INTERFACE: SearchStrategy ===== -->
+    <mxCell id="30" value="«interface»&#xa;SearchStrategy" style="swimlane;fontStyle=3;align=center;startSize=40;html=1;" vertex="1" parent="1">
+      <mxGeometry x="900" y="20" width="260" height="100" as="geometry" />
+    </mxCell>
+    <mxCell id="30s" value="" style="line;strokeWidth=1;fillColor=none;strokeColor=inherit;" vertex="1" parent="30">
+      <mxGeometry y="40" width="260" height="8" as="geometry" />
+    </mxCell>
+    <mxCell id="30a" value="+ search(books, query): List&lt;Book&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="30">
+      <mxGeometry y="48" width="260" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="30b" value="+ getStrategyName(): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="30">
+      <mxGeometry y="74" width="260" height="26" as="geometry" />
+    </mxCell>
+
+    <!-- ===== Concrete Strategies ===== -->
+    <mxCell id="31" value="SearchByTitle" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="860" y="240" width="160" height="52" as="geometry" />
+    </mxCell>
+    <mxCell id="31m" value="+ search(books, query)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="31">
+      <mxGeometry y="26" width="160" height="26" as="geometry" />
+    </mxCell>
+
+    <mxCell id="32" value="SearchByAuthor" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="1040" y="240" width="170" height="52" as="geometry" />
+    </mxCell>
+    <mxCell id="32m" value="+ search(books, query)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="32">
+      <mxGeometry y="26" width="170" height="26" as="geometry" />
+    </mxCell>
+
+    <mxCell id="33" value="SearchByGenre" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="1230" y="240" width="170" height="52" as="geometry" />
+    </mxCell>
+    <mxCell id="33m" value="+ search(books, query)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="33">
+      <mxGeometry y="26" width="170" height="26" as="geometry" />
+    </mxCell>
+
+    <!-- ===== INTERFACE: LibraryObserver ===== -->
+    <mxCell id="40" value="«interface»&#xa;LibraryObserver" style="swimlane;fontStyle=3;align=center;startSize=40;html=1;" vertex="1" parent="1">
+      <mxGeometry x="900" y="420" width="260" height="100" as="geometry" />
+    </mxCell>
+    <mxCell id="40s" value="" style="line;strokeWidth=1;fillColor=none;strokeColor=inherit;" vertex="1" parent="40">
+      <mxGeometry y="40" width="260" height="8" as="geometry" />
+    </mxCell>
+    <mxCell id="40a" value="+ onNotify(event, message): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="40">
+      <mxGeometry y="48" width="260" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="40b" value="+ getName(): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="40">
+      <mxGeometry y="74" width="260" height="26" as="geometry" />
+    </mxCell>
+
+    <!-- ===== Concrete Observers ===== -->
+    <mxCell id="41" value="LibraryMember" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="870" y="620" width="180" height="80" as="geometry" />
+    </mxCell>
+    <mxCell id="41f" value="- name: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="41">
+      <mxGeometry y="26" width="180" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="41s" value="" style="line;strokeWidth=1;fillColor=none;strokeColor=inherit;" vertex="1" parent="41">
+      <mxGeometry y="52" width="180" height="8" as="geometry" />
+    </mxCell>
+    <mxCell id="41m" value="+ onNotify(event, message): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="41">
+      <mxGeometry y="60" width="180" height="20" as="geometry" />
+    </mxCell>
+
+    <mxCell id="42" value="LibraryStaff" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="1080" y="620" width="180" height="80" as="geometry" />
+    </mxCell>
+    <mxCell id="42f" value="- name: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="42">
+      <mxGeometry y="26" width="180" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="42s" value="" style="line;strokeWidth=1;fillColor=none;strokeColor=inherit;" vertex="1" parent="42">
+      <mxGeometry y="52" width="180" height="8" as="geometry" />
+    </mxCell>
+    <mxCell id="42m" value="+ onNotify(event, message): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="42">
+      <mxGeometry y="60" width="180" height="20" as="geometry" />
+    </mxCell>
+
+    <!-- ===== INTERFACE: BorrowService (Decorator) ===== -->
+    <mxCell id="50" value="«interface»&#xa;BorrowService" style="swimlane;fontStyle=3;align=center;startSize=40;html=1;" vertex="1" parent="1">
+      <mxGeometry x="1340" y="20" width="250" height="120" as="geometry" />
+    </mxCell>
+    <mxCell id="50s" value="" style="line;strokeWidth=1;fillColor=none;strokeColor=inherit;" vertex="1" parent="50">
+      <mxGeometry y="40" width="250" height="8" as="geometry" />
+    </mxCell>
+    <mxCell id="50a" value="+ borrow(book, memberId): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="50">
+      <mxGeometry y="48" width="250" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="50b" value="+ getLoanDays(): int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="50">
+      <mxGeometry y="74" width="250" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="50c" value="+ getFee(): double" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="50">
+      <mxGeometry y="100" width="250" height="20" as="geometry" />
+    </mxCell>
+
+    <!-- ===== BaseBorrowService ===== -->
+    <mxCell id="51" value="BaseBorrowService" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="1250" y="260" width="200" height="78" as="geometry" />
+    </mxCell>
+    <mxCell id="51s" value="" style="line;strokeWidth=1;fillColor=none;strokeColor=inherit;" vertex="1" parent="51">
+      <mxGeometry y="26" width="200" height="8" as="geometry" />
+    </mxCell>
+    <mxCell id="51a" value="+ borrow(book, memberId): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="51">
+      <mxGeometry y="34" width="200" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="51b" value="+ getLoanDays(): int  + getFee(): double" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="51">
+      <mxGeometry y="52" width="200" height="26" as="geometry" />
+    </mxCell>
+
+    <!-- ===== ABSTRACT: BorrowDecorator ===== -->
+    <mxCell id="52" value="&lt;i&gt;BorrowDecorator&lt;/i&gt;" style="swimlane;fontStyle=3;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="1490" y="260" width="230" height="90" as="geometry" />
+    </mxCell>
+    <mxCell id="52f" value="# borrowService: BorrowService" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="52">
+      <mxGeometry y="26" width="230" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="52s" value="" style="line;strokeWidth=1;fillColor=none;strokeColor=inherit;" vertex="1" parent="52">
+      <mxGeometry y="52" width="230" height="8" as="geometry" />
+    </mxCell>
+    <mxCell id="52m" value="+ borrow(book, memberId): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="52">
+      <mxGeometry y="60" width="230" height="26" as="geometry" />
+    </mxCell>
+
+    <!-- ===== Concrete Decorators ===== -->
+    <mxCell id="53" value="ExtendTimeDecorator" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="1390" y="460" width="200" height="52" as="geometry" />
+    </mxCell>
+    <mxCell id="53m" value="+ borrow(book, memberId): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="53">
+      <mxGeometry y="26" width="200" height="26" as="geometry" />
+    </mxCell>
+
+    <mxCell id="54" value="SpecialEditionDecorator" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="1610" y="460" width="220" height="52" as="geometry" />
+    </mxCell>
+    <mxCell id="54m" value="+ borrow(book, memberId): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="54">
+      <mxGeometry y="26" width="220" height="26" as="geometry" />
+    </mxCell>
+
+    <!-- ===== CONNECTORS ===== -->
+    <!-- Concrete Books extend Book -->
+    <mxCell id="70" style="endArrow=block;endFill=0;edgeStyle=orthogonalEdgeStyle;" edge="1" source="11" target="10" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="71" style="endArrow=block;endFill=0;edgeStyle=orthogonalEdgeStyle;" edge="1" source="12" target="10" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="72" style="endArrow=block;endFill=0;edgeStyle=orthogonalEdgeStyle;" edge="1" source="13" target="10" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- Concrete Creators extend BookCreator -->
+    <mxCell id="73" style="endArrow=block;endFill=0;edgeStyle=orthogonalEdgeStyle;" edge="1" source="16" target="15" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="74" style="endArrow=block;endFill=0;edgeStyle=orthogonalEdgeStyle;" edge="1" source="17" target="15" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="75" style="endArrow=block;endFill=0;edgeStyle=orthogonalEdgeStyle;" edge="1" source="18" target="15" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- BookCreator creates Book -->
+    <mxCell id="76" value="«creates»" style="endArrow=open;dashed=1;edgeStyle=orthogonalEdgeStyle;html=1;" edge="1" source="15" target="10" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- Concrete Strategies implement SearchStrategy -->
+    <mxCell id="77" style="endArrow=block;endFill=0;dashed=1;edgeStyle=orthogonalEdgeStyle;" edge="1" source="31" target="30" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="78" style="endArrow=block;endFill=0;dashed=1;edgeStyle=orthogonalEdgeStyle;" edge="1" source="32" target="30" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="79" style="endArrow=block;endFill=0;dashed=1;edgeStyle=orthogonalEdgeStyle;" edge="1" source="33" target="30" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- Concrete Observers implement LibraryObserver -->
+    <mxCell id="80" style="endArrow=block;endFill=0;dashed=1;edgeStyle=orthogonalEdgeStyle;" edge="1" source="41" target="40" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="81" style="endArrow=block;endFill=0;dashed=1;edgeStyle=orthogonalEdgeStyle;" edge="1" source="42" target="40" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- BaseBorrowService implements BorrowService -->
+    <mxCell id="82" style="endArrow=block;endFill=0;dashed=1;edgeStyle=orthogonalEdgeStyle;" edge="1" source="51" target="50" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- BorrowDecorator implements BorrowService -->
+    <mxCell id="83" style="endArrow=block;endFill=0;dashed=1;edgeStyle=orthogonalEdgeStyle;" edge="1" source="52" target="50" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- BorrowDecorator wraps BorrowService -->
+    <mxCell id="84" value="wraps" style="startArrow=diamond;startFill=0;endArrow=none;edgeStyle=orthogonalEdgeStyle;html=1;" edge="1" source="52" target="50" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="1605" y="200" />
+          <mxPoint x="1465" y="200" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <!-- Concrete Decorators extend BorrowDecorator -->
+    <mxCell id="85" style="endArrow=block;endFill=0;edgeStyle=orthogonalEdgeStyle;" edge="1" source="53" target="52" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="86" style="endArrow=block;endFill=0;edgeStyle=orthogonalEdgeStyle;" edge="1" source="54" target="52" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- Library uses SearchStrategy -->
+    <mxCell id="87" value="uses" style="endArrow=open;dashed=1;edgeStyle=orthogonalEdgeStyle;html=1;" edge="1" source="2" target="30" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- Library observes LibraryObserver -->
+    <mxCell id="88" value="notifies" style="endArrow=open;edgeStyle=orthogonalEdgeStyle;html=1;" edge="1" source="2" target="40" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- Library manages Book -->
+    <mxCell id="89" value="manages" style="endArrow=open;edgeStyle=orthogonalEdgeStyle;html=1;" edge="1" source="2" target="10" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+  </root>
+</mxGraphModel>

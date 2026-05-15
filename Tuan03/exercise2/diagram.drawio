@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+
+    <!-- ===== INTERFACE: Subject ===== -->
+    <mxCell id="10" value="«interface»&#xa;Subject" style="swimlane;fontStyle=3;align=center;startSize=40;html=1;" vertex="1" parent="1">
+      <mxGeometry x="270" y="20" width="280" height="120" as="geometry" />
+    </mxCell>
+    <mxCell id="11" value="" style="line;strokeWidth=1;fillColor=none;strokeColor=inherit;" vertex="1" parent="10">
+      <mxGeometry y="40" width="280" height="8" as="geometry" />
+    </mxCell>
+    <mxCell id="12" value="+ subscribe(observer: Observer): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="10">
+      <mxGeometry y="48" width="280" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="13" value="+ unsubscribe(observer: Observer): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="10">
+      <mxGeometry y="74" width="280" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="14" value="+ notifyObservers(event, message): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="10">
+      <mxGeometry y="100" width="280" height="20" as="geometry" />
+    </mxCell>
+
+    <!-- ===== INTERFACE: Observer ===== -->
+    <mxCell id="20" value="«interface»&#xa;Observer" style="swimlane;fontStyle=3;align=center;startSize=40;html=1;" vertex="1" parent="1">
+      <mxGeometry x="840" y="20" width="240" height="100" as="geometry" />
+    </mxCell>
+    <mxCell id="21" value="" style="line;strokeWidth=1;fillColor=none;strokeColor=inherit;" vertex="1" parent="20">
+      <mxGeometry y="40" width="240" height="8" as="geometry" />
+    </mxCell>
+    <mxCell id="22" value="+ update(event, message): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="20">
+      <mxGeometry y="48" width="240" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="23" value="+ getName(): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="20">
+      <mxGeometry y="74" width="240" height="26" as="geometry" />
+    </mxCell>
+
+    <!-- ===== Stock (Concrete Subject) ===== -->
+    <mxCell id="30" value="Stock" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="60" y="260" width="260" height="190" as="geometry" />
+    </mxCell>
+    <mxCell id="31" value="- symbol: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="30">
+      <mxGeometry y="26" width="260" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="32" value="- price: double" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="30">
+      <mxGeometry y="52" width="260" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="33" value="- observers: List&lt;Observer&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="30">
+      <mxGeometry y="78" width="260" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="33s" value="" style="line;strokeWidth=1;fillColor=none;strokeColor=inherit;" vertex="1" parent="30">
+      <mxGeometry y="104" width="260" height="8" as="geometry" />
+    </mxCell>
+    <mxCell id="34" value="+ subscribe(observer): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="30">
+      <mxGeometry y="112" width="260" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="35" value="+ unsubscribe(observer): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="30">
+      <mxGeometry y="138" width="260" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="36" value="+ setPrice(newPrice: double): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="30">
+      <mxGeometry y="164" width="260" height="26" as="geometry" />
+    </mxCell>
+
+    <!-- ===== ProjectTask (Concrete Subject) ===== -->
+    <mxCell id="40" value="ProjectTask" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="390" y="260" width="270" height="216" as="geometry" />
+    </mxCell>
+    <mxCell id="41" value="- taskId: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="40">
+      <mxGeometry y="26" width="270" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="42" value="- title: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="40">
+      <mxGeometry y="52" width="270" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="43" value="- status: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="40">
+      <mxGeometry y="78" width="270" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="44" value="- observers: List&lt;Observer&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="40">
+      <mxGeometry y="104" width="270" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="44s" value="" style="line;strokeWidth=1;fillColor=none;strokeColor=inherit;" vertex="1" parent="40">
+      <mxGeometry y="130" width="270" height="8" as="geometry" />
+    </mxCell>
+    <mxCell id="45" value="+ subscribe(observer): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="40">
+      <mxGeometry y="138" width="270" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="46" value="+ updateStatus(newStatus: String): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="40">
+      <mxGeometry y="164" width="270" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="47" value="+ assign(member: String): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="40">
+      <mxGeometry y="190" width="270" height="26" as="geometry" />
+    </mxCell>
+
+    <!-- ===== Investor (Concrete Observer) ===== -->
+    <mxCell id="50" value="Investor" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="790" y="260" width="200" height="110" as="geometry" />
+    </mxCell>
+    <mxCell id="51" value="- name: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="50">
+      <mxGeometry y="26" width="200" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="51s" value="" style="line;strokeWidth=1;fillColor=none;strokeColor=inherit;" vertex="1" parent="50">
+      <mxGeometry y="52" width="200" height="8" as="geometry" />
+    </mxCell>
+    <mxCell id="52" value="+ update(event, message): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="50">
+      <mxGeometry y="60" width="200" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="53" value="+ getName(): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="50">
+      <mxGeometry y="86" width="200" height="26" as="geometry" />
+    </mxCell>
+
+    <!-- ===== TeamMember (Concrete Observer) ===== -->
+    <mxCell id="60" value="TeamMember" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="1020" y="260" width="210" height="130" as="geometry" />
+    </mxCell>
+    <mxCell id="61" value="- name: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="60">
+      <mxGeometry y="26" width="210" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="62" value="- role: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="60">
+      <mxGeometry y="52" width="210" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="62s" value="" style="line;strokeWidth=1;fillColor=none;strokeColor=inherit;" vertex="1" parent="60">
+      <mxGeometry y="78" width="210" height="8" as="geometry" />
+    </mxCell>
+    <mxCell id="63" value="+ update(event, message): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="60">
+      <mxGeometry y="86" width="210" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="64" value="+ getName(): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="60">
+      <mxGeometry y="112" width="210" height="18" as="geometry" />
+    </mxCell>
+
+    <!-- ===== CONNECTORS ===== -->
+    <!-- Stock implements Subject -->
+    <mxCell id="70" style="endArrow=block;endFill=0;dashed=1;edgeStyle=orthogonalEdgeStyle;" edge="1" source="30" target="10" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- ProjectTask implements Subject -->
+    <mxCell id="71" style="endArrow=block;endFill=0;dashed=1;edgeStyle=orthogonalEdgeStyle;" edge="1" source="40" target="10" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- Investor implements Observer -->
+    <mxCell id="72" style="endArrow=block;endFill=0;dashed=1;edgeStyle=orthogonalEdgeStyle;" edge="1" source="50" target="20" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- TeamMember implements Observer -->
+    <mxCell id="73" style="endArrow=block;endFill=0;dashed=1;edgeStyle=orthogonalEdgeStyle;" edge="1" source="60" target="20" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- Stock notifies Observer -->
+    <mxCell id="74" value="notifies" style="endArrow=open;edgeStyle=orthogonalEdgeStyle;html=1;" edge="1" source="30" target="20" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- ProjectTask notifies Observer -->
+    <mxCell id="75" value="notifies" style="endArrow=open;edgeStyle=orthogonalEdgeStyle;html=1;" edge="1" source="40" target="20" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+  </root>
+</mxGraphModel>
