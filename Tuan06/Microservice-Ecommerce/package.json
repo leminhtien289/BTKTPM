@@ -1,0 +1,10 @@
+{
+  "name": "microservice-ecommerce",
+  "version": "1.0.0",
+  "scripts": {
+    "check": "node check_lab.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
+  }
+}

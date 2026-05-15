@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - PRODUCT_SERVICE_URL=http://product-service:8081
+      - CUSTOMER_SERVICE_URL=http://customer-service:8082
+      - ORDER_SERVICE_URL=http://order-service:8083
+    depends_on:
+      - product-service
+      - customer-service
+      - order-service
+    networks:
+      - microservice-net
+    restart: unless-stopped
+
+  product-service:
+    build: ./product-service
+    ports:
+      - "8081:8081"
+    volumes:
+      - product-data:/data
+    networks:
+      - microservice-net
+    restart: unless-stopped
+
+  customer-service:
+    build: ./customer-service
+    ports:
+      - "8082:8082"
+    volumes:
+      - customer-data:/data
+    networks:
+      - microservice-net
+    restart: unless-stopped
+
+  order-service:
+    build: ./order-service
+    ports:
+      - "8083:8083"
+    environment:
+      - PRODUCT_SERVICE_URL=http://product-service:8081
+      - CUSTOMER_SERVICE_URL=http://customer-service:8082
+    volumes:
+      - order-data:/data
+    depends_on:
+      - product-service
+      - customer-service
+    networks:
+      - microservice-net
+    restart: unless-stopped
+
+networks:
+  microservice-net:
+    driver: bridge
+
+volumes:
+  product-data:
+  customer-data:
+  order-data:
