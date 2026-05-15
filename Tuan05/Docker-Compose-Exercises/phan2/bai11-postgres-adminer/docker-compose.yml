@@ -1,0 +1,23 @@
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    networks:
+      - pg_network
+
+  adminer:
+    image: adminer
+    ports:
+      - "8083:8080"
+    depends_on:
+      - postgres
+    networks:
+      - pg_network
+
+networks:
+  pg_network:

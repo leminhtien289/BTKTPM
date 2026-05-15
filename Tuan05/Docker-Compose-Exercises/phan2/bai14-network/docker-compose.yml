@@ -1,0 +1,28 @@
+services:
+  service-a:
+    image: alpine
+    container_name: service-a
+    command: sleep infinity
+    networks:
+      - network1
+      - network2
+
+  service-b:
+    image: alpine
+    container_name: service-b
+    command: sleep infinity
+    networks:
+      - network1
+
+  service-c:
+    image: alpine
+    container_name: service-c
+    command: sleep infinity
+    networks:
+      - network2
+
+networks:
+  network1:
+    driver: bridge
+  network2:
+    driver: bridge

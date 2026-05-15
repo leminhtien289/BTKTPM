@@ -1,0 +1,8 @@
+# Yêu cầu: chạy `npm run build` trong React project, copy output vào ./dist
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "3000:80"
+    volumes:
+      - ./dist:/usr/share/nginx/html:ro
