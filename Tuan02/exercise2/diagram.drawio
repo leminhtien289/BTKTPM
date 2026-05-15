@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+
+    <!-- ===== CONTEXT: Order ===== -->
+    <mxCell id="2" value="Order" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="530" y="20" width="270" height="216" as="geometry" />
+    </mxCell>
+    <mxCell id="3" value="- id: String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="2">
+      <mxGeometry y="26" width="270" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="4" value="- amount: double" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="2">
+      <mxGeometry y="52" width="270" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="4b" value="- state: OrderState" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="2">
+      <mxGeometry y="78" width="270" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="4c" value="- shippingStrategy: ShippingStrategy" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="2">
+      <mxGeometry y="104" width="270" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="4d" value="- notifier: Notifier" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="2">
+      <mxGeometry y="130" width="270" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="5" value="" style="line;strokeWidth=1;fillColor=none;strokeColor=inherit;" vertex="1" parent="2">
+      <mxGeometry y="156" width="270" height="8" as="geometry" />
+    </mxCell>
+    <mxCell id="6" value="+ process(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="2">
+      <mxGeometry y="164" width="270" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="7" value="+ cancel(): void   + calculateShipping(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="2">
+      <mxGeometry y="190" width="270" height="26" as="geometry" />
+    </mxCell>
+
+    <!-- ===== INTERFACE: OrderState ===== -->
+    <mxCell id="10" value="«interface»&#xa;OrderState" style="swimlane;fontStyle=3;align=center;startSize=40;html=1;" vertex="1" parent="1">
+      <mxGeometry x="20" y="290" width="250" height="110" as="geometry" />
+    </mxCell>
+    <mxCell id="11" value="" style="line;strokeWidth=1;fillColor=none;strokeColor=inherit;" vertex="1" parent="10">
+      <mxGeometry y="40" width="250" height="8" as="geometry" />
+    </mxCell>
+    <mxCell id="12" value="+ processOrder(order): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="10">
+      <mxGeometry y="48" width="250" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="13" value="+ cancelOrder(order): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="10">
+      <mxGeometry y="74" width="250" height="26" as="geometry" />
+    </mxCell>
+
+    <!-- ===== Concrete States ===== -->
+    <mxCell id="14" value="NewOrderState" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="20" y="500" width="170" height="52" as="geometry" />
+    </mxCell>
+    <mxCell id="14m" value="+ processOrder()  + cancelOrder()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="14">
+      <mxGeometry y="26" width="170" height="26" as="geometry" />
+    </mxCell>
+
+    <mxCell id="15" value="ProcessingState" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="210" y="500" width="170" height="52" as="geometry" />
+    </mxCell>
+    <mxCell id="15m" value="+ processOrder()  + cancelOrder()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="15">
+      <mxGeometry y="26" width="170" height="26" as="geometry" />
+    </mxCell>
+
+    <mxCell id="16" value="DeliveredState" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="400" y="500" width="170" height="52" as="geometry" />
+    </mxCell>
+    <mxCell id="16m" value="+ processOrder()  + cancelOrder()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="16">
+      <mxGeometry y="26" width="170" height="26" as="geometry" />
+    </mxCell>
+
+    <mxCell id="17" value="CancelledState" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="590" y="500" width="170" height="52" as="geometry" />
+    </mxCell>
+    <mxCell id="17m" value="+ processOrder()  + cancelOrder()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="17">
+      <mxGeometry y="26" width="170" height="26" as="geometry" />
+    </mxCell>
+
+    <!-- ===== INTERFACE: ShippingStrategy ===== -->
+    <mxCell id="20" value="«interface»&#xa;ShippingStrategy" style="swimlane;fontStyle=3;align=center;startSize=40;html=1;" vertex="1" parent="1">
+      <mxGeometry x="20" y="660" width="270" height="120" as="geometry" />
+    </mxCell>
+    <mxCell id="21" value="" style="line;strokeWidth=1;fillColor=none;strokeColor=inherit;" vertex="1" parent="20">
+      <mxGeometry y="40" width="270" height="8" as="geometry" />
+    </mxCell>
+    <mxCell id="22" value="+ calculateShippingCost(amount): double" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="20">
+      <mxGeometry y="48" width="270" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="23a" value="+ getMethodName(): String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="20">
+      <mxGeometry y="74" width="270" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="23b" value="+ getEstimatedDays(): int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="20">
+      <mxGeometry y="100" width="270" height="26" as="geometry" /> <!-- Increased height -->
+    </mxCell>
+
+    <!-- ===== Concrete Strategies ===== -->
+    <mxCell id="24" value="StandardShipping" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="20" y="880" width="180" height="52" as="geometry" />
+    </mxCell>
+    <mxCell id="24m" value="+ calculateShippingCost(): double" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="24">
+      <mxGeometry y="26" width="180" height="26" as="geometry" />
+    </mxCell>
+
+    <mxCell id="25" value="ExpressShipping" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="220" y="880" width="180" height="52" as="geometry" />
+    </mxCell>
+    <mxCell id="25m" value="+ calculateShippingCost(): double" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="25">
+      <mxGeometry y="26" width="180" height="26" as="geometry" />
+    </mxCell>
+
+    <mxCell id="26" value="SameDayShipping" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="420" y="880" width="180" height="52" as="geometry" />
+    </mxCell>
+    <mxCell id="26m" value="+ calculateShippingCost(): double" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="26">
+      <mxGeometry y="26" width="180" height="26" as="geometry" />
+    </mxCell>
+
+    <!-- ===== INTERFACE: Notifier ===== -->
+    <mxCell id="30" value="«interface»&#xa;Notifier" style="swimlane;fontStyle=3;align=center;startSize=40;html=1;" vertex="1" parent="1">
+      <mxGeometry x="970" y="290" width="200" height="80" as="geometry" />
+    </mxCell>
+    <mxCell id="31" value="" style="line;strokeWidth=1;fillColor=none;strokeColor=inherit;" vertex="1" parent="30">
+      <mxGeometry y="40" width="200" height="8" as="geometry" />
+    </mxCell>
+    <mxCell id="31m" value="+ send(message: String): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="30">
+      <mxGeometry y="48" width="200" height="26" as="geometry" />
+    </mxCell>
+
+    <!-- ===== BasicNotifier ===== -->
+    <mxCell id="32" value="BasicNotifier" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="860" y="460" width="180" height="52" as="geometry" />
+    </mxCell>
+    <mxCell id="32m" value="+ send(message: String): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="32">
+      <mxGeometry y="26" width="180" height="26" as="geometry" />
+    </mxCell>
+
+    <!-- ===== ABSTRACT: NotifierDecorator ===== -->
+    <mxCell id="33" value="&lt;i&gt;NotifierDecorator&lt;/i&gt;" style="swimlane;fontStyle=3;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="1080" y="460" width="210" height="86" as="geometry" />
+    </mxCell>
+    <mxCell id="33f" value="# wrapped: Notifier" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="33">
+      <mxGeometry y="26" width="210" height="26" as="geometry" />
+    </mxCell>
+    <mxCell id="33s" value="" style="line;strokeWidth=1;fillColor=none;strokeColor=inherit;" vertex="1" parent="33">
+      <mxGeometry y="52" width="210" height="8" as="geometry" />
+    </mxCell>
+    <mxCell id="33m" value="+ send(message: String): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="33">
+      <mxGeometry y="60" width="210" height="26" as="geometry" />
+    </mxCell>
+
+    <!-- ===== Concrete Decorators ===== -->
+    <mxCell id="34" value="EmailNotifier" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="870" y="650" width="160" height="52" as="geometry" />
+    </mxCell>
+    <mxCell id="34m" value="+ send(message: String): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="34">
+      <mxGeometry y="26" width="160" height="26" as="geometry" />
+    </mxCell>
+
+    <mxCell id="35" value="SMSNotifier" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="1050" y="650" width="160" height="52" as="geometry" />
+    </mxCell>
+    <mxCell id="35m" value="+ send(message: String): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="35">
+      <mxGeometry y="26" width="160" height="26" as="geometry" />
+    </mxCell>
+
+    <mxCell id="36" value="PushNotifier" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;" vertex="1" parent="1">
+      <mxGeometry x="1230" y="650" width="160" height="52" as="geometry" />
+    </mxCell>
+    <mxCell id="36m" value="+ send(message: String): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;html=1;" vertex="1" parent="36">
+      <mxGeometry y="26" width="160" height="26" as="geometry" />
+    </mxCell>
+
+    <!-- ===== CONNECTORS ===== -->
+    <!-- Order has OrderState -->
+    <mxCell id="50" value="state" style="endArrow=open;edgeStyle=orthogonalEdgeStyle;html=1;" edge="1" source="2" target="10" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- Order has ShippingStrategy -->
+    <mxCell id="51" value="strategy" style="endArrow=open;edgeStyle=orthogonalEdgeStyle;html=1;" edge="1" source="2" target="20" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- Order has Notifier -->
+    <mxCell id="52" value="notifier" style="endArrow=open;edgeStyle=orthogonalEdgeStyle;html=1;" edge="1" source="2" target="30" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- States implement OrderState -->
+    <mxCell id="53" style="endArrow=block;endFill=0;dashed=1;edgeStyle=orthogonalEdgeStyle;" edge="1" source="14" target="10" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="54" style="endArrow=block;endFill=0;dashed=1;edgeStyle=orthogonalEdgeStyle;" edge="1" source="15" target="10" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="55" style="endArrow=block;endFill=0;dashed=1;edgeStyle=orthogonalEdgeStyle;" edge="1" source="16" target="10" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="56" style="endArrow=block;endFill=0;dashed=1;edgeStyle=orthogonalEdgeStyle;" edge="1" source="17" target="10" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- Strategies implement ShippingStrategy -->
+    <mxCell id="57" style="endArrow=block;endFill=0;dashed=1;edgeStyle=orthogonalEdgeStyle;" edge="1" source="24" target="20" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="58" style="endArrow=block;endFill=0;dashed=1;edgeStyle=orthogonalEdgeStyle;" edge="1" source="25" target="20" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="59" style="endArrow=block;endFill=0;dashed=1;edgeStyle=orthogonalEdgeStyle;" edge="1" source="26" target="20" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- BasicNotifier implements Notifier -->
+    <mxCell id="60" style="endArrow=block;endFill=0;dashed=1;edgeStyle=orthogonalEdgeStyle;" edge="1" source="32" target="30" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- NotifierDecorator implements Notifier -->
+    <mxCell id="61" style="endArrow=block;endFill=0;dashed=1;edgeStyle=orthogonalEdgeStyle;" edge="1" source="33" target="30" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- Concrete decorators extend NotifierDecorator -->
+    <mxCell id="62" style="endArrow=block;endFill=0;edgeStyle=orthogonalEdgeStyle;" edge="1" source="34" target="33" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="63" style="endArrow=block;endFill=0;edgeStyle=orthogonalEdgeStyle;" edge="1" source="35" target="33" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="64" style="endArrow=block;endFill=0;edgeStyle=orthogonalEdgeStyle;" edge="1" source="36" target="33" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- NotifierDecorator wraps Notifier (aggregation) -->
+    <mxCell id="65" value="wraps" style="startArrow=diamond;startFill=0;endArrow=none;edgeStyle=orthogonalEdgeStyle;html=1;" edge="1" source="33" target="30" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+  </root>
+</mxGraphModel>
