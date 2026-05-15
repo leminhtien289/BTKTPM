@@ -1,0 +1,28 @@
+# Render Blueprint — Infrastructure as Code
+# Run: connect this repo to Render → "New Blueprint Instance"
+# Docs: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: microservice-api-gateway
+    runtime: docker
+    dockerfilePath: ./Tuan10/Microservice-Ecommerce/api-gateway/Dockerfile
+    dockerContext: ./Tuan10/Microservice-Ecommerce/api-gateway
+    plan: free
+    healthCheckPath: /health
+    autoDeploy: false          # CI/CD pipeline handles deploys via Deploy Hook
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000            # Render free tier uses port 10000
+      - key: SERVICE_NAME
+        value: api-gateway
+      - key: JWT_SECRET
+        sync: false             # set manually in Render dashboard (never commit secrets)
+      - key: JWT_EXPIRES_IN
+        value: 1h
+      - key: LOGSTASH_URL
+        value: ""               # leave empty unless you have a hosted ELK
+      - key: REDIS_URL
+        value: ""               # leave empty or set to hosted Redis URL
