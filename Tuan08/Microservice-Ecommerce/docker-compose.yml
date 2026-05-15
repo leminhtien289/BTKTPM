@@ -1,0 +1,176 @@
+version: '3.8'
+
+services:
+  # ── API Gateway ──────────────────────────────────────────────────────────────
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - PRODUCT_SERVICE_URL=http://product-service:8081
+      - CUSTOMER_SERVICE_URL=http://customer-service:8082
+      - ORDER_SERVICE_URL=http://order-service:8083
+      - PAYMENT_SERVICE_URL=http://payment-service:8084
+      - INVENTORY_SERVICE_URL=http://inventory-service:8085
+      - SHIPPING_SERVICE_URL=http://shipping-service:8086
+      - LOGSTASH_URL=http://logstash:5000
+      - JWT_SECRET=my_super_secret_jwt_key_2024
+      - SERVICE_NAME=api-gateway
+    volumes:
+      - gateway-data:/data
+    depends_on:
+      - product-service
+      - customer-service
+      - order-service
+      - payment-service
+      - inventory-service
+      - shipping-service
+    networks:
+      - microservice-net
+    restart: unless-stopped
+
+  # ── Business Services ────────────────────────────────────────────────────────
+  product-service:
+    build: ./product-service
+    ports:
+      - "8081:8081"
+    environment:
+      - LOGSTASH_URL=http://logstash:5000
+      - SERVICE_NAME=product-service
+    volumes:
+      - product-data:/data
+    networks:
+      - microservice-net
+    restart: unless-stopped
+
+  customer-service:
+    build: ./customer-service
+    ports:
+      - "8082:8082"
+    environment:
+      - LOGSTASH_URL=http://logstash:5000
+      - SERVICE_NAME=customer-service
+    volumes:
+      - customer-data:/data
+    networks:
+      - microservice-net
+    restart: unless-stopped
+
+  order-service:
+    build: ./order-service
+    ports:
+      - "8083:8083"
+    environment:
+      - PRODUCT_SERVICE_URL=http://product-service:8081
+      - CUSTOMER_SERVICE_URL=http://customer-service:8082
+      - PAYMENT_SERVICE_URL=http://payment-service:8084
+      - INVENTORY_SERVICE_URL=http://inventory-service:8085
+      - SHIPPING_SERVICE_URL=http://shipping-service:8086
+      - LOGSTASH_URL=http://logstash:5000
+      - SERVICE_NAME=order-service
+    volumes:
+      - order-data:/data
+    depends_on:
+      - product-service
+      - customer-service
+      - payment-service
+      - inventory-service
+      - shipping-service
+    networks:
+      - microservice-net
+    restart: unless-stopped
+
+  payment-service:
+    build: ./payment-service
+    ports:
+      - "8084:8084"
+    environment:
+      - LOGSTASH_URL=http://logstash:5000
+      - SERVICE_NAME=payment-service
+    volumes:
+      - payment-data:/data
+    networks:
+      - microservice-net
+    restart: unless-stopped
+
+  inventory-service:
+    build: ./inventory-service
+    ports:
+      - "8085:8085"
+    environment:
+      - LOGSTASH_URL=http://logstash:5000
+      - SERVICE_NAME=inventory-service
+    volumes:
+      - inventory-data:/data
+    networks:
+      - microservice-net
+    restart: unless-stopped
+
+  shipping-service:
+    build: ./shipping-service
+    ports:
+      - "8086:8086"
+    environment:
+      - LOGSTASH_URL=http://logstash:5000
+      - SERVICE_NAME=shipping-service
+    volumes:
+      - shipping-data:/data
+    networks:
+      - microservice-net
+    restart: unless-stopped
+
+  # ── ELK Stack ────────────────────────────────────────────────────────────────
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+    networks:
+      - microservice-net
+    restart: unless-stopped
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.11.0
+    ports:
+      - "5000:5000"
+    environment:
+      - xpack.monitoring.enabled=false
+      - LS_JAVA_OPTS=-Xms256m -Xmx256m
+    volumes:
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+    depends_on:
+      - elasticsearch
+    networks:
+      - microservice-net
+    restart: unless-stopped
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    networks:
+      - microservice-net
+    restart: unless-stopped
+
+networks:
+  microservice-net:
+    driver: bridge
+
+volumes:
+  gateway-data:
+  product-data:
+  customer-data:
+  order-data:
+  payment-data:
+  inventory-data:
+  shipping-data:
+  es-data:
