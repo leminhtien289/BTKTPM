@@ -1,0 +1,127 @@
+// B08 — Pipeline: Build → Push Docker Hub → kubectl apply → Rolling Update
+// Full CI/CD pipeline targeting Kubernetes cluster
+
+pipeline {
+    agent any
+
+    environment {
+        APP_NAME      = 'myapp'
+        REGISTRY      = 'docker.io'
+        IMAGE_NAME    = "${DOCKER_USERNAME}/${APP_NAME}"
+        IMAGE_TAG     = "${BUILD_NUMBER}"
+        K8S_NAMESPACE = 'default'
+        DEPLOYMENT    = 'myapp'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+                script {
+                    env.GIT_SHA = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+                    env.FULL_TAG = "${IMAGE_NAME}:${IMAGE_TAG}-${GIT_SHA}"
+                }
+                echo "Building: ${FULL_TAG}"
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh """
+                    docker build \
+                        --build-arg BUILD_DATE=\$(date -u +%Y-%m-%dT%H:%M:%SZ) \
+                        --build-arg GIT_COMMIT=${GIT_SHA} \
+                        -t ${FULL_TAG} \
+                        -t ${IMAGE_NAME}:latest \
+                        .
+                """
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DOCKER_USERNAME',
+                    passwordVariable: 'DOCKER_PASSWORD'
+                )]) {
+                    sh """
+                        echo "\$DOCKER_PASSWORD" | docker login -u "\$DOCKER_USERNAME" --password-stdin
+                        docker push ${FULL_TAG}
+                        docker push ${IMAGE_NAME}:latest
+                        docker logout
+                        echo "Pushed: ${FULL_TAG}"
+                    """
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                withCredentials([file(
+                    credentialsId: 'kubeconfig',
+                    variable: 'KUBECONFIG'
+                )]) {
+                    sh """
+                        export KUBECONFIG=\$KUBECONFIG
+
+                        # Update image — triggers rolling update
+                        kubectl set image deployment/${DEPLOYMENT} \
+                            ${APP_NAME}=${FULL_TAG} \
+                            -n ${K8S_NAMESPACE}
+
+                        # Wait for rollout (timeout 5 min)
+                        kubectl rollout status deployment/${DEPLOYMENT} \
+                            -n ${K8S_NAMESPACE} \
+                            --timeout=300s
+
+                        echo "Rollout complete"
+                    """
+                }
+            }
+        }
+
+        stage('Verify Deployment') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh """
+                        export KUBECONFIG=\$KUBECONFIG
+
+                        # Check all pods are running
+                        kubectl get pods -n ${K8S_NAMESPACE} -l app=${APP_NAME}
+
+                        # Verify image version
+                        RUNNING_IMAGE=\$(kubectl get deployment ${DEPLOYMENT} \
+                            -n ${K8S_NAMESPACE} \
+                            -o jsonpath='{.spec.template.spec.containers[0].image}')
+                        echo "Running image: \$RUNNING_IMAGE"
+
+                        # Health check via service
+                        NODE_PORT=\$(kubectl get svc ${APP_NAME}-service \
+                            -n ${K8S_NAMESPACE} \
+                            -o jsonpath='{.spec.ports[0].nodePort}')
+                        NODE_IP=\$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[0].address}')
+                        curl --fail --retry 3 http://\$NODE_IP:\$NODE_PORT/health
+                        echo "Health check PASSED"
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        failure {
+            withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                sh '''
+                    export KUBECONFIG=$KUBECONFIG
+                    echo "Deployment failed — rolling back"
+                    kubectl rollout undo deployment/${DEPLOYMENT} -n ${K8S_NAMESPACE}
+                    kubectl rollout status deployment/${DEPLOYMENT} -n ${K8S_NAMESPACE}
+                '''
+            }
+        }
+        always {
+            sh 'docker rmi ${FULL_TAG} || true'   // clean local image
+        }
+    }
+}
