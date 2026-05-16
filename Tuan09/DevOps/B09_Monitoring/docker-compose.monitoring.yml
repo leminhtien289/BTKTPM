@@ -1,0 +1,96 @@
+# B09 — Prometheus + Grafana Monitoring Stack
+# Tái dùng từ XLSX B5 Bài 4, mở rộng thêm Node Exporter + AlertManager
+# Run: docker compose -f docker-compose.monitoring.yml up -d
+# Prometheus: http://localhost:9090
+# Grafana:    http://localhost:3000  (admin/admin)
+# AlertMgr:  http://localhost:9093
+
+services:
+  # ── Application (target to monitor) ──────────────────────────────────────────
+  myapp:
+    image: username/myapp:latest
+    container_name: myapp
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+    labels:
+      - "prometheus.scrape=true"
+      - "prometheus.port=8080"
+      - "prometheus.path=/metrics"
+
+  # ── Prometheus ────────────────────────────────────────────────────────────────
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./alert_rules.yml:/etc/prometheus/alert_rules.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=15d'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+
+  # ── Grafana ───────────────────────────────────────────────────────────────────
+  grafana:
+    image: grafana/grafana:10.2.0
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/var/lib/grafana/dashboards/app.json
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+  # ── Node Exporter (host metrics) ──────────────────────────────────────────────
+  node-exporter:
+    image: prom/node-exporter:v1.7.0
+    container_name: node-exporter
+    ports:
+      - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+    restart: unless-stopped
+
+  # ── cAdvisor (container metrics) ─────────────────────────────────────────────
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.0
+    container_name: cadvisor
+    ports:
+      - "8081:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+    restart: unless-stopped
+
+  # ── Alertmanager ─────────────────────────────────────────────────────────────
+  alertmanager:
+    image: prom/alertmanager:v0.26.0
+    container_name: alertmanager
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+    restart: unless-stopped
+
+volumes:
+  prometheus_data:
+  grafana_data:
