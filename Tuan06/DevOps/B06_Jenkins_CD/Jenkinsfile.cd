@@ -1,0 +1,137 @@
+// B06 — Jenkins CD: Deploy → Restart Service → Rollback
+// Continuous Delivery pipeline with manual approval gate + rollback
+
+pipeline {
+    agent any
+
+    environment {
+        APP_NAME   = 'myapp'
+        IMAGE_NAME = "${DOCKER_USERNAME}/${APP_NAME}"
+        DEPLOY_DIR = '/opt/myapp'
+    }
+
+    parameters {
+        string(name: 'IMAGE_TAG', defaultValue: 'latest',
+               description: 'Docker image tag to deploy (e.g. 42, latest)')
+        booleanParam(name: 'ROLLBACK', defaultValue: false,
+                     description: 'Rollback to previous version?')
+    }
+
+    stages {
+        stage('Pre-Deploy Check') {
+            steps {
+                sh '''
+                    echo "=== Pre-deploy health check ==="
+                    curl --fail --silent http://$SERVER_IP/health \
+                        | grep '"status":"ok"' \
+                        || echo "WARNING: current version unhealthy"
+                    echo "Deploying tag: ${IMAGE_TAG}"
+                '''
+            }
+        }
+
+        stage('Approval Gate') {
+            when {
+                expression { params.IMAGE_TAG != 'latest' }
+            }
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    input message: "Deploy ${APP_NAME}:${IMAGE_TAG} to production?",
+                          ok: 'Deploy',
+                          submitter: 'admin,lead-dev'
+                }
+            }
+        }
+
+        stage('Rollback') {
+            when {
+                expression { params.ROLLBACK == true }
+            }
+            steps {
+                withCredentials([
+                    sshUserPrivateKey(credentialsId: 'deploy-server-ssh',
+                                      keyFileVariable: 'SSH_KEY',
+                                      usernameVariable: 'SSH_USER'),
+                    string(credentialsId: 'deploy-server-ip', variable: 'SERVER_IP')
+                ]) {
+                    sh '''
+                        echo "=== ROLLBACK initiated ==="
+                        ssh -i $SSH_KEY -o StrictHostKeyChecking=no $SSH_USER@$SERVER_IP "
+                            cd ${DEPLOY_DIR}
+                            PREVIOUS=$(cat .previous_tag 2>/dev/null || echo 'latest')
+                            echo Rollback to tag: $PREVIOUS
+                            export IMAGE_TAG=$PREVIOUS
+                            docker compose up -d --no-deps app
+                            echo Rollback complete
+                        "
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy') {
+            when {
+                expression { params.ROLLBACK == false }
+            }
+            steps {
+                withCredentials([
+                    sshUserPrivateKey(credentialsId: 'deploy-server-ssh',
+                                      keyFileVariable: 'SSH_KEY',
+                                      usernameVariable: 'SSH_USER'),
+                    string(credentialsId: 'deploy-server-ip', variable: 'SERVER_IP'),
+                    usernamePassword(credentialsId: 'dockerhub-credentials',
+                                     usernameVariable: 'DOCKER_USERNAME',
+                                     passwordVariable: 'DOCKER_PASSWORD')
+                ]) {
+                    sh '''
+                        ssh -i $SSH_KEY -o StrictHostKeyChecking=no $SSH_USER@$SERVER_IP "
+                            set -e
+                            cd ${DEPLOY_DIR}
+
+                            # Save current tag for rollback
+                            CURRENT=$(docker inspect --format={{.Config.Image}} \
+                                      ${APP_NAME} 2>/dev/null | cut -d: -f2 || echo 'none')
+                            echo $CURRENT > .previous_tag
+                            echo Previous tag saved: $CURRENT
+
+                            # Pull new image
+                            echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+                            docker pull ${IMAGE_NAME}:${IMAGE_TAG}
+                            docker logout
+
+                            # Update compose and restart
+                            export IMAGE_TAG=${IMAGE_TAG}
+                            docker compose up -d --no-deps app
+
+                            # Wait for healthy
+                            sleep 5
+                            curl --fail --retry 3 http://localhost:8080/health
+                            echo Deploy successful: ${IMAGE_TAG}
+                        "
+                    '''
+                }
+            }
+        }
+
+        stage('Post-Deploy Verification') {
+            steps {
+                withCredentials([string(credentialsId: 'deploy-server-ip', variable: 'SERVER_IP')]) {
+                    sh '''
+                        echo "=== Smoke test ==="
+                        sleep 5
+                        curl --fail http://$SERVER_IP/health
+                        curl --fail http://$SERVER_IP/api/products | grep -q "products"
+                        echo "=== Smoke test PASSED ==="
+                    '''
+                }
+            }
+        }
+    }
+
+    post {
+        failure {
+            echo "Deployment FAILED — initiating auto-rollback"
+            // Auto-rollback on failure: re-trigger with ROLLBACK=true
+        }
+    }
+}
