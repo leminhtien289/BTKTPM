@@ -1,0 +1,22 @@
+# B04 — Jenkins via Docker + Freestyle Job
+# Run: docker compose -f docker-compose.jenkins.yml up -d
+# Access: http://localhost:8888
+# Initial password: docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+
+services:
+  jenkins:
+    image: jenkins/jenkins:lts-jdk17
+    container_name: jenkins
+    user: root
+    ports:
+      - "8888:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock   # allow Jenkins to run Docker
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+    restart: unless-stopped
+
+volumes:
+  jenkins_home:
