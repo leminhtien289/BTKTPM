@@ -1,0 +1,152 @@
+// B05 — Jenkinsfile Multi-Stage: Checkout → Build → Test → Deploy
+// Declarative Pipeline with credentials binding
+
+pipeline {
+    agent any
+
+    // ── Tool versions ─────────────────────────────────────────────────────────
+    tools {
+        nodejs 'NodeJS-18'   // configure in Jenkins → Global Tool Configuration
+    }
+
+    // ── Environment variables (non-secret) ───────────────────────────────────
+    environment {
+        APP_NAME    = 'myapp'
+        IMAGE_NAME  = "${DOCKER_USERNAME}/${APP_NAME}"
+        NODE_ENV    = 'test'
+    }
+
+    // ── Pipeline options ──────────────────────────────────────────────────────
+    options {
+        timeout(time: 30, unit: 'MINUTES')
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        timestamps()
+        ansiColor('xterm')
+    }
+
+    // ── Trigger: build on push to main/develop ────────────────────────────────
+    triggers {
+        pollSCM('H/5 * * * *')
+    }
+
+    stages {
+        // ── Stage 1: Checkout ─────────────────────────────────────────────────
+        stage('Checkout') {
+            steps {
+                checkout scm
+                sh '''
+                    echo "Branch: ${GIT_BRANCH}"
+                    echo "Commit: ${GIT_COMMIT}"
+                    git log --oneline -5
+                '''
+            }
+        }
+
+        // ── Stage 2: Install & Lint ───────────────────────────────────────────
+        stage('Build') {
+            steps {
+                sh '''
+                    echo "=== Installing dependencies ==="
+                    npm ci
+                    echo "=== Running lint ==="
+                    npm run lint
+                    echo "=== Building application ==="
+                    npm run build
+                '''
+            }
+            post {
+                success {
+                    archiveArtifacts artifacts: 'dist/**', fingerprint: true
+                }
+            }
+        }
+
+        // ── Stage 3: Test ─────────────────────────────────────────────────────
+        stage('Test') {
+            parallel {
+                stage('Unit Tests') {
+                    steps {
+                        sh 'npm run test:unit -- --reporter=junit --reporter-options output=test-results/unit.xml'
+                    }
+                }
+                stage('Integration Tests') {
+                    steps {
+                        sh 'npm run test:integration -- --reporter=junit --reporter-options output=test-results/integration.xml'
+                    }
+                }
+            }
+            post {
+                always {
+                    junit 'test-results/**/*.xml'
+                }
+            }
+        }
+
+        // ── Stage 4: Docker Build & Push ──────────────────────────────────────
+        stage('Docker Build & Push') {
+            when {
+                branch 'main'   // only push from main branch
+            }
+            steps {
+                // credentials binding — never echo these values
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub-credentials',
+                        usernameVariable: 'DOCKER_USERNAME',
+                        passwordVariable: 'DOCKER_PASSWORD'
+                    )
+                ]) {
+                    sh '''
+                        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+                        docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} .
+                        docker tag ${IMAGE_NAME}:${BUILD_NUMBER} ${IMAGE_NAME}:latest
+                        docker push ${IMAGE_NAME}:${BUILD_NUMBER}
+                        docker push ${IMAGE_NAME}:latest
+                        docker logout
+                    '''
+                }
+            }
+        }
+
+        // ── Stage 5: Deploy to Staging ────────────────────────────────────────
+        stage('Deploy') {
+            when {
+                branch 'main'
+            }
+            steps {
+                withCredentials([
+                    sshUserPrivateKey(
+                        credentialsId: 'deploy-server-ssh',
+                        keyFileVariable: 'SSH_KEY',
+                        usernameVariable: 'SSH_USER'
+                    ),
+                    string(credentialsId: 'deploy-server-ip', variable: 'SERVER_IP')
+                ]) {
+                    sh '''
+                        ssh -i $SSH_KEY -o StrictHostKeyChecking=no \
+                            $SSH_USER@$SERVER_IP \
+                            "cd /opt/myapp && \
+                             docker pull ${IMAGE_NAME}:${BUILD_NUMBER} && \
+                             docker compose up -d --no-deps app && \
+                             echo Deploy complete: build ${BUILD_NUMBER}"
+                    '''
+                }
+            }
+        }
+    }
+
+    // ── Post-pipeline notifications ───────────────────────────────────────────
+    post {
+        success {
+            echo "Pipeline SUCCESS — Build #${BUILD_NUMBER} deployed"
+            // slackSend channel: '#deploys', message: "Deploy success: ${APP_NAME} #${BUILD_NUMBER}"
+        }
+        failure {
+            echo "Pipeline FAILED — Build #${BUILD_NUMBER}"
+            // mail to: 'team@example.com', subject: "Build failed: ${APP_NAME} #${BUILD_NUMBER}"
+        }
+        always {
+            cleanWs()   // clean workspace after build
+        }
+    }
+}
